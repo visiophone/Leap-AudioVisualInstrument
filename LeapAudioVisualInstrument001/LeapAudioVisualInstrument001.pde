@@ -83,7 +83,7 @@ void setup () {
 //image for the menu screen
  menuPic= loadImage("menu_Screen.png");
 
-  background (220);
+  background (240);
 
   //SOUNDSTUFF
   minim = new Minim(this);
@@ -160,35 +160,98 @@ void draw () {
 
 
 
-  // 2 scene 
+  // menu
   if (m0==true) {
     background(240);
     imageMode(CENTER);
-   // image(menuPic, width/2, height/2);
+    image(menuPic, width/2, height/2);
  
  //menu select 1   
- /*
-     if (pointer.x<width/3-10 && countH>0) {
+ 
+     if (pointer.x<width/3-10 ) {
     
     stroke(0);
-    fill(240);
+    fill(0);
     ellipse(pointer.x, pointer.y, 20,20);
-  
-  line(pointer.x, pointer.y, width/3, height/2);
-  
+   line(pointer.x, pointer.y, width/3-120, height/2);
+    ellipse( width/3-120, height/2 ,10,10);
      noStroke();
-    fill(240,150);
-    rect(0,0, width/3,height);
+   // fill(240,150);
+  //  rect(0,0, width/3,height);
     
    
    if(tap){
-    m1=true;
+    m2=true;
+     m1=false;
+    m3=false;
+    m0=false;
    tap=false; 
    }
       
     }
-*/    
+    
+    
+     if (pointer.x>width/3-10 && pointer.x<(width/3*2)-10 ) {
+    
+    stroke(0);
+    fill(0);
+    ellipse(pointer.x, pointer.y, 20,20);
+   line(pointer.x, pointer.y, width/2, height/2);
+     ellipse( width/2, height/2, 10,10);
+  
+     noStroke();
+   // fill(240,150);
+  //  rect(0,0, width/3,height);
+    
+   
+   if(tap){
+    m1=true;
+     m3=false;
+    m2=false;
+    m0=false;
+   tap=false; 
+   
+     stroke(5);
+  strokeCap(SQUARE);
+  noFill();
+  colorMode(RGB,255);
+   
+   }
+      
+    }
+    
+    
+         if ( pointer.x>(width/3*2)-10 ) {
+    
+    stroke(0);
+    fill(0);
+    ellipse(pointer.x, pointer.y, 20,20);
+   line(pointer.x, pointer.y, (width/3*2)+120, height/2);
+    ellipse( (width/3*2)+120, height/2, 10,10);
+  
+     noStroke();
+   // fill(240,150);
+  //  rect(0,0, width/3,height);
+    
+   
+   if(tap){
+    m3=true;
+    m1=false;
+    m2=false;
+    m0=false;
+   tap=false; 
+   }
+      
+    }
+    
+    
+    
   }
+
+
+////////////////////////////////////////////////////////
+
+
 
   // 2 scene 
   if (m1==true) {
@@ -262,6 +325,16 @@ void keyReleased() {
     m2=false;
     m3=false;
     println("mode4");
+  }
+  
+    if (key == 'm' || key == 'M' ) { 
+    m0=true;
+    m1=false;
+    m2=false;
+    m3=false;
+    println("mode4");
+    colorMode(RGB,255);
+    out2.mute();
   }
 }
 

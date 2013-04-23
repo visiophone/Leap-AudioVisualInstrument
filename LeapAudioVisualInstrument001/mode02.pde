@@ -22,7 +22,7 @@ class mode02 {
 
 
   void display (float inputY) {
-    background(200);
+    background(240);
 
     //println(mouseX+" "+mouseY+" "+selC1);
     stroke(140);
