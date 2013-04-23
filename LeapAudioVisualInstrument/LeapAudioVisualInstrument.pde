@@ -24,13 +24,17 @@ Oscil       wave1;
 Oscil       wave2;
 
 //image for the welcome screen
-PImage menuPic;
+PImage menuPic, menuPic1, menuPic2, menuPic3;
 
 //leap iniciate
 LeapMotionP5 leap;
 
 //BOOLEAN FOR SCREEN TAPINT
 boolean tap=false;
+//bolean for selecting the instrument
+boolean select1 = false;
+boolean select2 = false;
+boolean select3 = false;
 
 // PVector for one finger
 PVector pointer = new PVector(0, 0);
@@ -81,7 +85,10 @@ void setup () {
   mode3= new mode03();
 
 //image for the menu screen
- menuPic= loadImage("menu_Screen.png");
+ menuPic = loadImage("menu_Screen.png");
+ menuPic1 = loadImage("menu_Screen_1.png");
+ menuPic2 = loadImage("menu_Screen_2.png");
+ menuPic3 = loadImage("menu_Screen_3.png");
 
   background (240);
 
@@ -155,19 +162,21 @@ void draw () {
 
   ;
 
- // ellipse(pointer.x, pointer.y, 30, 30);
-  //println(pointer.x);
 
-
+///////////////////////////////////////////////////////////////////////////////////////
 
   // menu
   if (m0==true) {
     background(240);
     imageMode(CENTER);
-    image(menuPic, width/2, height/2);
- 
- //menu select 1   
- 
+   if(select1==false && select2==false && select3==false) image(menuPic, width/2, height/2);
+  //menu screen for each instrument
+    if(select1==true) image(menuPic1, width/2, height/2);
+    if(select2==true) image(menuPic2, width/2, height/2);
+     if(select3==true) image(menuPic3, width/2, height/2);
+   
+   
+  //menu select 1    
      if (pointer.x<width/3-10 ) {
     
     stroke(0);
@@ -178,9 +187,16 @@ void draw () {
      noStroke();
    // fill(240,150);
   //  rect(0,0, width/3,height);
+  
+  if(tap && select1==false){
+    select1=true;
+    select2=false;
+    select3=false;
+    tap=false;
     
+  }
    
-   if(tap){
+   if(tap && select1){
     m2=true;
      m1=false;
     m3=false;
@@ -190,6 +206,7 @@ void draw () {
       
     }
     
+     
     
      if (pointer.x>width/3-10 && pointer.x<(width/3*2)-10 ) {
     
@@ -203,8 +220,15 @@ void draw () {
    // fill(240,150);
   //  rect(0,0, width/3,height);
     
+      if(tap && select2==false){
+    select1=false;
+    select2=true;
+    select3=false;
+    tap=false;
+    
+  }
    
-   if(tap){
+   if(tap && select2){
     m1=true;
      m3=false;
     m2=false;
@@ -233,8 +257,15 @@ void draw () {
    // fill(240,150);
   //  rect(0,0, width/3,height);
     
+     if(tap && select3==false){
+    select1=false;
+    select2=false;
+    select3=true;
+    tap=false;
+    
+  }
    
-   if(tap){
+   if(tap && select3){
     m3=true;
     m1=false;
     m2=false;
@@ -332,6 +363,11 @@ void keyReleased() {
     m1=false;
     m2=false;
     m3=false;
+    
+    select1=false;
+    select2=false;
+    select3=false;
+    
     println("mode4");
     colorMode(RGB,255);
     out2.mute();
