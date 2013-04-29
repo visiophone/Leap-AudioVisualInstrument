@@ -4,6 +4,24 @@ import ddf.minim.ugens.*;
 import ddf.minim.effects.*;
 import ddf.minim.signals.*;
 
+// this package is where we get our Synthesizer from
+import javax.sound.midi.*;
+// what we need from JavaSound for sound making.
+Synthesizer   synth;
+// the MidiChannels of the synth.
+MidiChannel[] channels;
+
+// Notes are called by name, this arrya stores them
+String[] noteName = {
+                    "C1", "C#1", "D1","D#1","E1","F1","F#1","G1","G#1","A1","A#1","B1",
+                     "C2", "C#2", "D2","D#2","E2","F2","F#2","G2","G#2","A2","A#2","B2",
+                     "C3", "C#3", "D3","D#3","E3","F3","F#3","G3","G#3","A3","A#3","B3",
+                      "C4", "C#4", "D4","D#4","E4","F4","F#4","G4","G#4","A4","A#4","B4",
+                      "C5", "C#5", "D5","D#5","E5","F5","F#5","G5","G#5","A5","A#5","B5",
+                        "C6", "C#6", "D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
+                      };
+
+
 // leap lib
 import com.onformative.leap.LeapMotionP5;
 import com.leapmotion.leap.Finger;
@@ -122,6 +140,33 @@ void setup () {
 
   strokeCap(SQUARE);
   frameRate(50);
+  
+  
+  ///////////////////////
+  // INICIATE MIDI SYNTH
+     try
+  {
+    synth = MidiSystem.getSynthesizer();
+    synth.open();
+    // get all the channels for the synth
+    channels = synth.getChannels();
+    // we're only going to use two channels,
+    // which we'll now configure to use particular midi instruments. 
+    // but you should have up to 16 channels available.
+    // for a list of general midi instrument program numbers, see: http://www.midi.org/techspecs/gm1sound.php
+    channels[1].programChange( 38 ); // should be "electric piano 1"
+    channels[2].programChange( 47 ); // should be "acoustic bass"
+    
+    // ok make a sequence with our output and custom Instrument
+   // out.setTempo( 120 );
+  
+   }
+  catch( MidiUnavailableException ex )
+  {
+    // oops there wasn't one.
+    println( "No default synthesizer." );
+  } 
+  //////////////////////
 }
 
 
@@ -197,8 +242,8 @@ void draw () {
   }
    
    if(tap && select1){
-    m2=true;
-     m1=false;
+    m1=true;
+     m2=false;
     m3=false;
     m0=false;
    tap=false; 
@@ -229,9 +274,9 @@ void draw () {
   }
    
    if(tap && select2){
-    m1=true;
+    m2=true;
      m3=false;
-    m2=false;
+    m1=false;
     m0=false;
    tap=false; 
    
@@ -389,6 +434,15 @@ public void screenTapGestureRecognized(ScreenTapGesture gesture) {
   }
 }
 
+
+
+//function to make noite with MIDISynth
+// just a little helper function to reduce how much typing is required
+// for the sequence code below.
+void note( float time, float duration, int channelIndex, String noteName, float velocity )
+{
+  out.playNote( time, duration, new MidiSynth( channelIndex, noteName, velocity ) );
+}
 
 
 
