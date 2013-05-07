@@ -50,15 +50,14 @@ int timeN=0;
     //checking if fingers still active /moving. if not, return to zero
    for(int id=0;id<30;id++){  
      
-      if(preFingerXX[id]==fingerXX[id]) {
-      
-        fingerYY[id]+=((height-5)-fingerYY[id])*0.02; 
-
-      } 
-      
+     
+  if (abs(preFingerYY[id]-fingerYY[id])>3 || abs(preFingerXX[id]-fingerXX[id])>2 ){
+     
+    fingerYY[id]+=((height-5)-fingerYY[id])*0.02;  
       // if there are fingers active play Midi notes in finger's Pos
- else if (abs(preFingerYY[id]-fingerYY[id])>2 && abs(preFingerXX[id]-fingerXX[id])>2 ){
- 
+ // if (abs(preFingerYY[id]-fingerYY[id])>1 || abs(preFingerXX[id]-fingerXX[id])>1 ){
+   
+  
 
   float dur=0.0;
   if (timeN>20) dur=2;
@@ -68,22 +67,22 @@ int timeN=0;
   
   int mapNote= int(map(fingerYY[id], height, 0, 0,71));
   mapNote=constrain(mapNote,0,71);
-println(mapNote);
+//println(mapNote);
 
 //TIME, / DURATION / CHANNEL / NOTENAME, VELOCITY);
-if(timeN>1)note( 0, dur,1, noteName[mapNote], 0.8 );
+note( 0, dur,1, noteName[mapNote], 0.8 );
 
 //play note, duration related to time  elapsed sinsce last finger. pitch related to the YY
-//out.playNote( 0, dur, map(fingerYY[id], height, 0, 300,1000));
+  } 
 
- timeN=0; 
-     } 
-  
+  fingerYY[id]+=((height-5)-fingerYY[id])*0.02;  
+
+    timeN=0; 
       preFingerXX[id]=fingerXX[id];
       preFingerYY[id]=fingerYY[id];
    }
   
-  //out.resumeNotes();
+ // out.resumeNotes();
   
 //nrNotes=0;
     // drawing lines spectrum

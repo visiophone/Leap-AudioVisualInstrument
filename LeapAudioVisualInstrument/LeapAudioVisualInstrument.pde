@@ -21,13 +21,16 @@ String[] noteName = {
                         "C6", "C#6", "D6","D#6","E6","F6","F#6","G6","G#6","A6","A#6","B6",
                       };
 
-
+//leap iniciate
+LeapMotionP5 leap;
 // leap lib
 import com.onformative.leap.LeapMotionP5;
 import com.leapmotion.leap.Finger;
 import com.leapmotion.leap.Hand;
 import com.leapmotion.leap.ScreenTapGesture;
 import com.leapmotion.leap.Gesture.State;
+import com.leapmotion.leap.SwipeGesture;
+import com.leapmotion.leap.CircleGesture;
 import com.leapmotion.leap.Gesture.Type;
 
 //sound iniciate
@@ -44,8 +47,7 @@ Oscil       wave2;
 //image for the welcome screen
 PImage menuPic, menuPic1, menuPic2, menuPic3;
 
-//leap iniciate
-LeapMotionP5 leap;
+
 
 //BOOLEAN FOR SCREEN TAPINT
 boolean tap=false;
@@ -86,7 +88,7 @@ float [] fingerYY = new float [30];
 
 
 boolean sketchFullScreen() {
- return true;
+ return false;
  }
  
 
@@ -132,6 +134,8 @@ void setup () {
 
   leap = new LeapMotionP5(this);
   leap.enableGesture(Type.TYPE_SCREEN_TAP);
+  leap.enableGesture(Type.TYPE_SWIPE);
+   leap.enableGesture(Type.TYPE_CIRCLE);
 
   m0=true;
 
@@ -154,11 +158,11 @@ void setup () {
     // which we'll now configure to use particular midi instruments. 
     // but you should have up to 16 channels available.
     // for a list of general midi instrument program numbers, see: http://www.midi.org/techspecs/gm1sound.php
-    channels[1].programChange( 38 ); // should be "electric piano 1"
+    channels[1].programChange( 90 ); // should be "electric piano 1"
     channels[2].programChange( 47 ); // should be "acoustic bass"
     
     // ok make a sequence with our output and custom Instrument
-   // out.setTempo( 120 );
+
   
    }
   catch( MidiUnavailableException ex )
@@ -329,9 +333,9 @@ void draw () {
 
 
 
-  // 2 scene 
+  // 1 scene 
   if (m1==true) {
-    
+       out.setTempo( 120 );
      stroke(5);
     strokeCap(SQUARE);
     noFill();
@@ -351,7 +355,7 @@ void draw () {
 
 
 
-  // 2 scene 
+  // 3 scene 
   if (m3==true) {
     tap=false;
     mode3.display();
@@ -417,6 +421,13 @@ void keyReleased() {
     colorMode(RGB,255);
     out2.mute();
   }
+  
+  if (key =='i'){
+     
+    int instrument = int(random(1,127));
+    channels[1].programChange( instrument );
+    println("intrs "+instrument);
+  }
 }
 
 
@@ -427,6 +438,38 @@ void keyReleased() {
 public void screenTapGestureRecognized(ScreenTapGesture gesture) {
   if (gesture.state() == State.STATE_STOP) {
     tap=true;
+  } 
+  else if (gesture.state() == State.STATE_START) {
+  } 
+  else if (gesture.state() == State.STATE_UPDATE) {
+  }
+}
+
+
+public void swipeGestureRecognized(SwipeGesture gesture) {
+ /*
+  if (gesture.state() == State.STATE_STOP) {
+  if(m1){
+    int instrument = int(random(1,127));
+    channels[1].programChange( instrument );
+    println("intrs "+instrument);
+  }
+  } 
+  else if (gesture.state() == State.STATE_START) {
+  } 
+  else if (gesture.state() == State.STATE_UPDATE) {
+  }
+  */
+}
+
+public void circleGestureRecognized(CircleGesture gesture, String clockwiseness) {
+  if (gesture.state() == State.STATE_STOP) {
+  if(m1 && gesture.durationSeconds()>0.8){
+    int instrument = int(random(1,127));
+    channels[1].programChange( instrument );
+    println("intrs "+instrument+" // circle duration "+gesture.durationSeconds());
+    
+  }
   } 
   else if (gesture.state() == State.STATE_START) {
   } 
