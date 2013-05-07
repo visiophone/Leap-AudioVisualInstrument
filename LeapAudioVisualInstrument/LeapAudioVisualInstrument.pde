@@ -68,6 +68,16 @@ mode02 mode2;
 mode03 mode3;
 
 
+// ARRAY WITH THE SELECT MIDI INSTRUMENTS
+String[] instrName = {"TANGO ACCORDION", "ELECTRIC BASS" ," CONTRABASS", "STRING ENSEMBLE","TUBA", "TENOR SAX", "CLARINET", "PICCOLO PIPE", "SAWTOOTH SYNTH", 
+                      "CHIFF SYNTH", "NEW AGE SYNTH PAD", "POLY SYNTH SYNTH PAD","BOWED SYNTH PAD", "METALLIC SYNTH PAD", "KOTO", "GUITAR FRET NOISE","HELICOPTER FX"   };
+int [] instrSelect = {23, 25, 43, 49,58, 66, 71, 72, 81, 83, 88, 90, 92, 93, 107, 120, 125 };
+
+//var that olds de instrument name/id
+int instrChange=1;
+
+
+//screen dim
 int h;
 int w;
 
@@ -97,7 +107,7 @@ SineWave sine;
 
 void setup () {
   // size (1200,750);
-
+println(instrSelect.length+" "+instrName.length);
   size (displayWidth, displayHeight);
 
   mode1= new mode01();
@@ -154,14 +164,18 @@ void setup () {
     synth.open();
     // get all the channels for the synth
     channels = synth.getChannels();
-    // we're only going to use two channels,
-    // which we'll now configure to use particular midi instruments. 
-    // but you should have up to 16 channels available.
-    // for a list of general midi instrument program numbers, see: http://www.midi.org/techspecs/gm1sound.php
-    channels[1].programChange( 90 ); // should be "electric piano 1"
-    channels[2].programChange( 47 ); // should be "acoustic bass"
+    // CHANNEL ZERO IS FOR THE MENUS SOUNDS
+    channels[0].programChange( 5 );
+    // CHANNEL ONE IS FOR MODE1 INSTRUMENTS
+    channels[1].programChange( instrChange ); 
+    // CHANNEL TWO IS FOR MODE1 INSTRUMENTS 1
+    channels[2].programChange( 5 ); 
+    // CHANNEL TWO IS FOR MODE1 INSTRUMENTS 1
+    channels[3].programChange( 10 ); 
+    // CHANNEL TWO IS FOR MODE1 INSTRUMENTS 1
+    channels[4].programChange( 15 ); 
     
-    // ok make a sequence with our output and custom Instrument
+   
 
   
    }
@@ -214,7 +228,7 @@ void draw () {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
-  // menu
+  // mMENU
   if (m0==true) {
     background(240);
     imageMode(CENTER);
@@ -238,6 +252,7 @@ void draw () {
   //  rect(0,0, width/3,height);
   
   if(tap && select1==false){
+    note( 0, 1,0,"C5" , 0.8 );
     select1=true;
     select2=false;
     select3=false;
@@ -246,6 +261,7 @@ void draw () {
   }
    
    if(tap && select1){
+       
     m1=true;
      m2=false;
     m3=false;
@@ -270,6 +286,7 @@ void draw () {
   //  rect(0,0, width/3,height);
     
       if(tap && select2==false){
+        note( 0, 1,0,"D5" , 0.8 );
     select1=false;
     select2=true;
     select3=false;
@@ -307,6 +324,7 @@ void draw () {
   //  rect(0,0, width/3,height);
     
      if(tap && select3==false){
+       note( 0, 1,0,"A5" , 0.8 );
     select1=false;
     select2=false;
     select3=true;
@@ -335,12 +353,16 @@ void draw () {
 
   // 1 scene 
   if (m1==true) {
-       out.setTempo( 120 );
+      out.setTempo( 120 );
      stroke(5);
     strokeCap(SQUARE);
     noFill();
     mode1.display();
     out2.mute();
+    
+    // INFO AND MENUS ON SCREEN.
+    text("Instrument "+instrName[instrChange], 30, 30);
+    
   }
 
 
@@ -422,12 +444,7 @@ void keyReleased() {
     out2.mute();
   }
   
-  if (key =='i'){
-     
-    int instrument = int(random(1,127));
-    channels[1].programChange( instrument );
-    println("intrs "+instrument);
-  }
+ 
 }
 
 
@@ -437,7 +454,7 @@ void keyReleased() {
 //LISTENING TO LEAP SCREEN TAP
 public void screenTapGestureRecognized(ScreenTapGesture gesture) {
   if (gesture.state() == State.STATE_STOP) {
-    tap=true;
+   tap=true;
   } 
   else if (gesture.state() == State.STATE_START) {
   } 
@@ -447,34 +464,42 @@ public void screenTapGestureRecognized(ScreenTapGesture gesture) {
 
 
 public void swipeGestureRecognized(SwipeGesture gesture) {
- /*
+ 
   if (gesture.state() == State.STATE_STOP) {
-  if(m1){
-    int instrument = int(random(1,127));
-    channels[1].programChange( instrument );
-    println("intrs "+instrument);
+    //GESTURE IN INST-1 IF THERE IS ONLY ONE HAND, AND AN HORIZONTAL SWIPE ->> CHANGE INSTRUMENT
+  if(countH==1 && m1 && gesture.direction().get(1)<0.5 && gesture.direction().get(1)>-0.5){
+    instrChange = int(random(0,16));
+    channels[1].programChange( instrSelect[instrChange] );
+   println("swipe "+ gesture.duration());
+    
+   
+    
   }
-  } 
+   }
   else if (gesture.state() == State.STATE_START) {
   } 
   else if (gesture.state() == State.STATE_UPDATE) {
+  
   }
-  */
+  
 }
 
 public void circleGestureRecognized(CircleGesture gesture, String clockwiseness) {
+ /*
   if (gesture.state() == State.STATE_STOP) {
-  if(m1 && gesture.durationSeconds()>0.8){
+  if(m1 && gesture.durationSeconds()>0.6){
     int instrument = int(random(1,127));
     channels[1].programChange( instrument );
-    println("intrs "+instrument+" // circle duration "+gesture.durationSeconds());
+   // println("intrs "+instrument+" // circle duration "+gesture.durationSeconds());
     
   }
   } 
+ 
   else if (gesture.state() == State.STATE_START) {
   } 
   else if (gesture.state() == State.STATE_UPDATE) {
   }
+   */
 }
 
 

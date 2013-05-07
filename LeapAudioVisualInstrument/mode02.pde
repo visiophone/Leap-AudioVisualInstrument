@@ -162,9 +162,9 @@ if (selC1==false && selC2==false && selC3==false) {
     ///////////////////////////////////////
 
     // calls the circle funcion
-    circle1.display(selC1, 100, inputY);
-    circle2.display(selC2, 500, inputY);
-    circle3.display(selC3, 800, inputY);
+    circle1.display(selC1, 100, inputY, 2);
+    circle2.display(selC2, 500, inputY, 3);
+    circle3.display(selC3, 800, inputY, 4);
 
   }
 }

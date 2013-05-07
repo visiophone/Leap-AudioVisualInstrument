@@ -58,8 +58,8 @@ line(xx1[i],yy1[i],xx2[i],yy2[i])   ;
   }
   
  
- // function , receives select to know if the circle is active or not, and a value to multiply the frequencies, and the input Y 
-  void display (boolean select, float freq, float inputY){
+ // function , receives select to know if the circle is active or not, and a value to multiply the frequencies, and the input Y + instrument number
+  void display (boolean select, float freq, float inputY, int instSelec){
   
     sel=select;
    // println(sel);
@@ -135,8 +135,14 @@ yy2[i] = r2[i]*sin(alpha[i]);
 
 // if the line draw is up, play that note play note
 if(r2[i]>50){
-out.playNote( freq+(r2[i]*2) );
-//println(freq+(r2[i]*2));
+//out.playNote( freq+(r2[i]*2) );
+ int mapNote= int(map(r2[i], 50, 175, 0,11));
+// PLAY MIDI NOTE
+//TIME, / DURATION / CHANNEL / NOTENAME, VELOCITY);
+ channels[2].programChange( instrSelect[instSelec] );
+note( 0, 1,2, noteName[mapNote], 0.8 );
+
+println(r2[i]);
 colorFreq=int(freq+(r2[i]*2));
 }
 }
