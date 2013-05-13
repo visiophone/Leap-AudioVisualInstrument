@@ -12,6 +12,8 @@ class mode02 {
   boolean selC2=false;
   boolean selC3=false;
   int counter=1;
+  
+
 
   mode02() {
     //draws the circles in the screen
@@ -27,6 +29,7 @@ class mode02 {
     //println(mouseX+" "+mouseY+" "+selC1);
     stroke(140);
     strokeWeight(1);
+    fill (140);
     ellipse(pointer.x, pointer.y, 20, 20);
 
     // select the  circle 1
@@ -162,9 +165,9 @@ if (selC1==false && selC2==false && selC3==false) {
     ///////////////////////////////////////
 
     // calls the circle funcion
-    circle1.display(selC1, 100, inputY, 2);
-    circle2.display(selC2, 500, inputY, 3);
-    circle3.display(selC3, 800, inputY, 4);
+    circle1.display(selC1, 100, inputY, 1);
+    circle2.display(selC2, 500, inputY, 14);
+    circle3.display(selC3, 800, inputY, 11);
 
   }
 }

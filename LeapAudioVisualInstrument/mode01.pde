@@ -21,6 +21,10 @@ float [] preFingerYY = new float [30];
 
 // time between notes
 int timeN=0;
+
+// time count to change instrument
+int changeCount=0;
+boolean change=false;
   
   mode01() {
   stroke(5);
@@ -81,10 +85,31 @@ note( 0, dur,1, noteName[mapNote], 0.8 );
   }  
 nrNotes =0;
 
+////////
+// If no hands on screen for some seconds change instrument
 
-
+if(countH==1 || countF==0  && !change ) {
+ 
+  changeCount++;
+  
+  
+ // println(changeCount);
+  if(changeCount>=30){
+    
+     instrChange = int(random(0, 16));
+      channels[1].programChange( instrSelect[instrChange] );
+      changeCount=0;
+      change=true;
+  }
+  
+}
+if(countH!=0){
+  changeCount=0;
+  change=false;
+}
 
 
   }
+  
   
 }

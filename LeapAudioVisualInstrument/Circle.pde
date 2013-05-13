@@ -33,6 +33,7 @@ float[] newR = new float [nr];
 
 float speed = 0.02;
   
+  int pitch=24;
   
   //contructor
   Circle(float xx, float yy) {
@@ -140,7 +141,7 @@ if(r2[i]>50){
 // PLAY MIDI NOTE
 //TIME, / DURATION / CHANNEL / NOTENAME, VELOCITY);
  channels[2].programChange( instrSelect[instSelec] );
-note( 0, 1,2, noteName[mapNote], 0.8 );
+  note( 0, 1,2, noteName[mapNote+pitch], 0.8 );
 
 println(r2[i]);
 colorFreq=int(freq+(r2[i]*2));
